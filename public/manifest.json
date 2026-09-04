@@ -1,0 +1,25 @@
+{
+  "short_name": "Pathyakram",
+  "name": "Pathyakram by KMCE - Academic Portal",
+  "description": "Comprehensive academic portal for KMCE (Keshav Memorial College of Engineering) with branch-wise question papers, R25 JNTUH syllabus quizzes, faculty document hub, and attendance tracker.",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#800020",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "scope": "/"
+}
