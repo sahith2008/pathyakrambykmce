@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: 'Outfit', sans-serif;
+    --font-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --maroon-primary: #800020;
+    --maroon-dark: #580016;
+    --maroon-deep: #400010;
+    --maroon-accent: #9f1239;
+    --maroon-light: #fff1f2;
+    --maroon-border: #fecdd3;
+  }
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-mono-code {
+  font-family: var(--font-mono);
+}
+
+/* White and Maroon Theme Accents */
+.bg-maroon-900 { background-color: #4a0413; }
+.bg-maroon-800 { background-color: #5c0618; }
+.bg-maroon-700 { background-color: #800020; }
+.bg-maroon-600 { background-color: #9f1239; }
+.bg-maroon-500 { background-color: #be123c; }
+.bg-maroon-100 { background-color: #ffe4e6; }
+.bg-maroon-50  { background-color: #fff1f2; }
+
+.text-maroon-900 { color: #4a0413; }
+.text-maroon-800 { color: #5c0618; }
+.text-maroon-700 { color: #800020; }
+.text-maroon-600 { color: #9f1239; }
+.text-maroon-500 { color: #be123c; }
+
+.border-maroon-700 { border-color: #800020; }
+.border-maroon-600 { border-color: #9f1239; }
+.border-maroon-200 { border-color: #fecdd3; }
+
+/* Glassmorphism custom styling */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(128, 0, 32, 0.12);
+}
+
+.dark .glass-panel {
+  background: rgba(26, 11, 16, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(244, 63, 94, 0.15);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dark .glass-card {
+  background: rgba(36, 15, 23, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Custom subtle scrollbar with maroon touch */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 0, 32, 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 0, 32, 0.6);
+}
+
+/* Print styling for question papers */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
+
+

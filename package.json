@@ -5,7 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
+    "dev:all": "node -e \"const { spawn } = require('child_process'); spawn('npm', ['run', 'dev:backend'], { stdio: 'inherit', shell: true }); spawn('npm', ['run', 'dev:frontend'], { stdio: 'inherit', shell: true });\"",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "db:setup": "tsx database/init.ts",
     "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "build:all": "npm --prefix backend run build && npm --prefix frontend run build",
     "start": "node dist/server.cjs",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit"

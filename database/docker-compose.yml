@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: kmce_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: kmce_admin
+      POSTGRES_PASSWORD: kmce_secret_password
+      POSTGRES_DB: kmce_pathyakram
+    ports:
+      - "5432:5432"
+    volumes:
+      - kmce_pgdata:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+
+volumes:
+  kmce_pgdata:
+    driver: local
