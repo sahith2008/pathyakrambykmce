@@ -9,14 +9,12 @@ import {
 import {
   INITIAL_ACADEMIC_DOCUMENTS,
   INITIAL_NOTIFICATIONS,
-  DEMO_STUDENT_PROFILES,
 } from './data/mockData';
 import { Header } from './components/Header';
 import { NavigationTabs } from './components/NavigationTabs';
 import { AuthScreen } from './components/AuthScreen';
 import { QuestionPapersView } from './components/QuestionPapersView';
 import { QuizView } from './components/QuizView';
-import { AttendanceTrackerView } from './components/AttendanceTrackerView';
 import { FacultyDirectoryView } from './components/FacultyDirectoryView';
 import { CourseListingsView } from './components/CourseListingsView';
 import { FacultyUploadView } from './components/FacultyUploadView';
@@ -119,6 +117,19 @@ export default function App() {
       localStorage.removeItem('kmce_faculty_session');
     }
   }, [facultyUser]);
+
+  // Ensure activeTab stays within allowed tabs for each role
+  useEffect(() => {
+    if (studentUser) {
+      if (!['papers', 'quiz', 'faculty', 'contact'].includes(activeTab)) {
+        setActiveTab('papers');
+      }
+    } else if (facultyUser) {
+      if (!['upload', 'courses', 'papers'].includes(activeTab)) {
+        setActiveTab('upload');
+      }
+    }
+  }, [studentUser, facultyUser, activeTab]);
 
   const handleLoginStudent = (student: StudentProfile) => {
     setStudentUser(student);
@@ -258,6 +269,7 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+        {/* Question Papers: Accessible to both Student and Faculty */}
         {activeTab === 'papers' && (
           <QuestionPapersView
             documents={documents}
@@ -268,24 +280,22 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'quiz' && (
+        {/* Student-Only: JNTUH R25 AI Quiz Hub */}
+        {activeTab === 'quiz' && userRole === 'student' && (
           <QuizView
             userBranch={currentBranch}
-            studentName={studentUser?.name || facultyUser?.name || 'KMCE Scholar'}
-            studentHallTicket={studentUser?.hallticket || facultyUser?.empId || '23KM1A0542'}
+            studentName={studentUser?.name || 'KMCE Scholar'}
+            studentHallTicket={studentUser?.hallticket || '23KM1A0542'}
           />
         )}
 
-        {activeTab === 'attendance' && (
-          <AttendanceTrackerView
-            currentStudent={studentUser}
-            userBranch={currentBranch}
-          />
+        {/* Student-Only: HOD & Faculty Directory */}
+        {activeTab === 'faculty' && userRole === 'student' && (
+          <FacultyDirectoryView userRole={userRole} />
         )}
 
-        {activeTab === 'faculty' && <FacultyDirectoryView />}
-
-        {activeTab === 'courses' && (
+        {/* Faculty-Only: Branch Course Listings */}
+        {activeTab === 'courses' && (userRole === 'faculty' || userRole === 'hod_admin') && (
           <CourseListingsView
             userBranch={currentBranch}
             onSelectSubjectForPapers={(code) => {
@@ -294,7 +304,8 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'upload' && (
+        {/* Faculty-Only: Faculty Upload Hub */}
+        {activeTab === 'upload' && (userRole === 'faculty' || userRole === 'hod_admin') && (
           <FacultyUploadView
             documents={documents}
             onAddDocument={handleAddDocument}
@@ -304,7 +315,8 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'contact' && <CollegeInfoView />}
+        {/* Student-Only: KMCE Info & Contact */}
+        {activeTab === 'contact' && userRole === 'student' && <CollegeInfoView />}
       </main>
 
       {/* Floating Action Button for Fast Dashboard Navigation */}

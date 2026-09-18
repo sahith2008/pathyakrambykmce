@@ -26,7 +26,7 @@ export const KMCE_COLLEGE_INFO: CollegeInfo = {
   counselingCode: 'KMCE (EAMCET / ECET Code: KMCE)',
   campusHighlights: [
     'State-of-the-art AI & High Performance Computing Research Labs',
-    'Dedicated JNTUH R25 Autonomous Examination & Digital Evaluation Cell',
+    'Dedicated JNTUH R25 Examination & Digital Evaluation Cell (Affiliated to JNTU)',
     'Advanced IoT & Embedded Systems Lab sponsored by Texas Instruments',
     'High-speed 1 Gbps Campus WiFi & 24/7 Digital Library Access',
     'Active Industry MoU with TCS, Tech Mahindra, Infosys, and AWS Academy',
@@ -755,35 +755,7 @@ export const DEFAULT_ATTENDANCE_DATA: Record<string, AttendanceRecord[]> = {
   ]
 };
 
-export const DEMO_STUDENT_PROFILES = [
-  {
-    name: 'Sahith Sidhartha',
-    hallticket: '23KM1A0542',
-    branch: 'CSE' as const,
-    semester: 4,
-    academicYear: '2024-2025',
-    section: 'CSE-A',
-    email: '23km1a0542@kmce.edu.in'
-  },
-  {
-    name: 'Aarav Sharma',
-    hallticket: '23KM1A6618',
-    branch: 'CSM' as const,
-    semester: 5,
-    academicYear: '2024-2025',
-    section: 'CSM-B (AI&ML)',
-    email: '23km1a6618@kmce.edu.in'
-  },
-  {
-    name: 'Kavya Tejaswi',
-    hallticket: '23KM1A0410',
-    branch: 'ECE' as const,
-    semester: 5,
-    academicYear: '2024-2025',
-    section: 'ECE-A',
-    email: '23km1a0410@kmce.edu.in'
-  }
-];
+
 
 export const INITIAL_ACADEMIC_DOCUMENTS = INITIAL_DOCUMENTS;
 export const KMCE_COURSES_CATALOG = INITIAL_COURSES;

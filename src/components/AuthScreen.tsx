@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  BookOpen,
   CheckCircle,
   Eye,
   EyeOff,
@@ -12,10 +11,9 @@ import {
   Sun,
   User,
   UserCheck,
-  Zap,
 } from 'lucide-react';
 import { BranchCode, FacultyProfile, StudentProfile } from '../types';
-import { DEMO_STUDENT_PROFILES, INITIAL_FACULTY_LIST, KMCE_COLLEGE_INFO } from '../data/mockData';
+import { INITIAL_FACULTY_LIST, KMCE_COLLEGE_INFO } from '../data/mockData';
 import kmceCampusImg from '../assets/images/kmce_campus_photo_real_1788079482219.jpg';
 
 interface AuthScreenProps {
@@ -53,20 +51,38 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
       setAuthError('Please enter your full student name');
       return;
     }
-    if (!studentHallTicket.trim()) {
+    const cleanHt = studentHallTicket.trim().toUpperCase();
+    if (!cleanHt) {
       setAuthError('Please enter your unique JNTUH / KMCE Hall Ticket number');
+      return;
+    }
+
+    // Check year prefix: any year/prefix below 23 must be rejected
+    const prefixMatch = cleanHt.match(/^(\d{2})/);
+    if (prefixMatch) {
+      const yearPrefix = parseInt(prefixMatch[1], 10);
+      if (yearPrefix < 23) {
+        setAuthError('Hall Ticket numbers starting with year below 23 are not permitted. Only batches 23, 24, 25, and 26 are valid.');
+        return;
+      }
+    }
+
+    // Must start with 23, 24, 25, or 26 and follow KMCE pattern (e.g. 23KM1A0542)
+    const kmcePattern = /^2[3-6]KM[0-9A-Z]{6}$/;
+    if (!kmcePattern.test(cleanHt)) {
+      setAuthError('Please enter a valid KMCE Hall Ticket number starting with 23, 24, 25, or 26 (e.g. 23KM1A0542, 24KM1A6615, 25KM1A0418, 26KM1A0501).');
       return;
     }
 
     setAuthError(null);
     onLoginStudent({
       name: studentName.trim(),
-      hallticket: studentHallTicket.trim().toUpperCase(),
+      hallticket: cleanHt,
       branch: studentBranch,
       semester: studentSemester,
       academicYear: '2024-2025',
       section: `${studentBranch}-${studentSemester <= 2 ? '1' : 'A'}`,
-      email: `${studentHallTicket.toLowerCase()}@kmce.edu.in`,
+      email: `${cleanHt.toLowerCase()}@kmce.edu.in`,
     });
   };
 
@@ -129,24 +145,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
         researchAreas: ['Academic Excellence & Innovation']
       });
     }
-  };
-
-  const selectQuickStudentDemo = (demo: typeof DEMO_STUDENT_PROFILES[0]) => {
-    setStudentName(demo.name);
-    setStudentHallTicket(demo.hallticket);
-    setStudentBranch(demo.branch);
-    setStudentSemester(demo.semester);
-    setAuthError(null);
-    onLoginStudent(demo);
-  };
-
-  const selectQuickFacultyDemo = (fac: FacultyProfile) => {
-    setFacultyName(fac.name);
-    setFacultyEmpId(fac.empId);
-    setFacultySubject(fac.assignedSubjects[0] || 'Engineering Curriculum');
-    setFacultyPassword('kmce@2025');
-    setAuthError(null);
-    onLoginFaculty(fac);
   };
 
   return (
@@ -400,30 +398,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
                     placeholder="e.g. Design & Analysis of Algorithms, Machine Learning, etc."
                     className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-stone-900 border border-slate-200 dark:border-stone-700 text-slate-900 dark:text-white placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#800020] transition-all"
                   />
-                  {/* Quick Subject Suggestions */}
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {[
-                      'Design & Analysis of Algorithms',
-                      'Machine Learning & Foundations',
-                      'Database Management Systems',
-                      'Digital Signal Processing',
-                      'Operating Systems',
-                      'VLSI Design & Technology'
-                    ].map((subj) => (
-                      <button
-                        key={subj}
-                        type="button"
-                        onClick={() => setFacultySubject(subj)}
-                        className={`text-[10px] px-2 py-0.5 rounded-md border transition-all cursor-pointer ${
-                          facultySubject === subj
-                            ? 'bg-rose-100 dark:bg-rose-950 border-rose-300 dark:border-rose-700 text-[#800020] dark:text-rose-300 font-bold'
-                            : 'bg-slate-100 dark:bg-stone-800 border-slate-200 dark:border-stone-700 text-slate-600 dark:text-slate-400 hover:bg-rose-50 dark:hover:bg-rose-950/40'
-                        }`}
-                      >
-                        {subj}
-                      </button>
-                    ))}
-                  </div>
                 </div>
               </div>
 
@@ -499,55 +473,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
               </button>
             </form>
           )}
-
-          {/* Instant One-Click Demo Access Box */}
-          <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800">
-            <div className="flex items-center gap-1.5 mb-2.5 text-xs font-semibold text-slate-600 dark:text-slate-400">
-              <Zap className="w-3.5 h-3.5 text-amber-500" />
-              <span>Quick One-Click Demo Personas:</span>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              <button
-                type="button"
-                id="quick-demo-cse-student"
-                onClick={() => selectQuickStudentDemo(DEMO_STUDENT_PROFILES[0])}
-                className="px-2.5 py-1.5 rounded-lg bg-slate-50 hover:bg-rose-50/80 hover:border-rose-300 dark:bg-stone-900 dark:hover:bg-rose-950/60 border border-slate-200 dark:border-stone-800 text-left transition-all text-[11px] cursor-pointer"
-              >
-                <div className="font-bold text-slate-900 dark:text-white truncate">Sahith S.</div>
-                <div className="text-[10px] text-[#800020] dark:text-rose-400 font-mono-code">CSE • Sem 4</div>
-              </button>
-
-              <button
-                type="button"
-                id="quick-demo-csm-student"
-                onClick={() => selectQuickStudentDemo(DEMO_STUDENT_PROFILES[1])}
-                className="px-2.5 py-1.5 rounded-lg bg-slate-50 hover:bg-rose-50/80 hover:border-rose-300 dark:bg-stone-900 dark:hover:bg-rose-950/60 border border-slate-200 dark:border-stone-800 text-left transition-all text-[11px] cursor-pointer"
-              >
-                <div className="font-bold text-slate-900 dark:text-white truncate">Aarav (CSM)</div>
-                <div className="text-[10px] text-[#800020] dark:text-rose-400 font-mono-code">CSM AI • Sem 5</div>
-              </button>
-
-              <button
-                type="button"
-                id="quick-demo-hod-cse"
-                onClick={() => selectQuickFacultyDemo(INITIAL_FACULTY_LIST[0])}
-                className="px-2.5 py-1.5 rounded-lg bg-slate-50 hover:bg-rose-50/80 hover:border-rose-300 dark:bg-stone-900 dark:hover:bg-rose-950/60 border border-slate-200 dark:border-stone-800 text-left transition-all text-[11px] cursor-pointer"
-              >
-                <div className="font-bold text-slate-900 dark:text-white truncate">Dr. Murali K.</div>
-                <div className="text-[10px] text-[#800020] dark:text-rose-300 font-semibold truncate">HOD CSE (DAA)</div>
-              </button>
-
-              <button
-                type="button"
-                id="quick-demo-hod-csm"
-                onClick={() => selectQuickFacultyDemo(INITIAL_FACULTY_LIST[1])}
-                className="px-2.5 py-1.5 rounded-lg bg-slate-50 hover:bg-rose-50/80 hover:border-rose-300 dark:bg-stone-900 dark:hover:bg-rose-950/60 border border-slate-200 dark:border-stone-800 text-left transition-all text-[11px] cursor-pointer"
-              >
-                <div className="font-bold text-slate-900 dark:text-white truncate">Dr. Radhika D.</div>
-                <div className="text-[10px] text-[#800020] dark:text-rose-300 font-semibold truncate">HOD CSM (ML)</div>
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Footer Support Info */}
