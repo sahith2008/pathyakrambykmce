@@ -305,60 +305,76 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-3 pt-3 border-t border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-2 animate-in fade-in duration-150">
-            <button
-              onClick={() => { setActiveTab('papers'); setMobileMenuOpen(false); }}
-              className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
-                activeTab === 'papers' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
-              }`}
-            >
-              <BookOpen className="w-4 h-4" />
-              <span>Question Papers</span>
-            </button>
-            <button
-              onClick={() => { setActiveTab('quiz'); setMobileMenuOpen(false); }}
-              className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
-                activeTab === 'quiz' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
-              }`}
-            >
-              <GraduationCap className="w-4 h-4" />
-              <span>R25 AI Quizzes</span>
-            </button>
-            <button
-              onClick={() => { setActiveTab('attendance'); setMobileMenuOpen(false); }}
-              className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
-                activeTab === 'attendance' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
-              }`}
-            >
-              <CheckCircle2 className="w-4 h-4" />
-              <span>Attendance Tracker</span>
-            </button>
-            <button
-              onClick={() => { setActiveTab('faculty'); setMobileMenuOpen(false); }}
-              className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
-                activeTab === 'faculty' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
-              }`}
-            >
-              <ShieldCheck className="w-4 h-4" />
-              <span>HOD & Faculty</span>
-            </button>
-            <button
-              onClick={() => { setActiveTab('courses'); setMobileMenuOpen(false); }}
-              className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
-                activeTab === 'courses' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
-              }`}
-            >
-              <BookOpen className="w-4 h-4" />
-              <span>Branch Courses</span>
-            </button>
-            <button
-              onClick={() => { setActiveTab('upload'); setMobileMenuOpen(false); }}
-              className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
-                activeTab === 'upload' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
-              }`}
-            >
-              <User className="w-4 h-4" />
-              <span>Faculty Upload</span>
-            </button>
+            {userRole === 'faculty' || userRole === 'hod_admin' ? (
+              <>
+                <button
+                  onClick={() => { setActiveTab('upload'); setMobileMenuOpen(false); }}
+                  className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
+                    activeTab === 'upload' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  <User className="w-4 h-4" />
+                  <span>Faculty Upload Hub</span>
+                </button>
+                <button
+                  onClick={() => { setActiveTab('courses'); setMobileMenuOpen(false); }}
+                  className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
+                    activeTab === 'courses' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  <BookOpen className="w-4 h-4" />
+                  <span>Branch Courses</span>
+                </button>
+                <button
+                  onClick={() => { setActiveTab('papers'); setMobileMenuOpen(false); }}
+                  className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
+                    activeTab === 'papers' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  <BookOpen className="w-4 h-4" />
+                  <span>Question Papers</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => { setActiveTab('papers'); setMobileMenuOpen(false); }}
+                  className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
+                    activeTab === 'papers' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  <BookOpen className="w-4 h-4" />
+                  <span>Question Papers</span>
+                </button>
+                <button
+                  onClick={() => { setActiveTab('quiz'); setMobileMenuOpen(false); }}
+                  className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
+                    activeTab === 'quiz' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  <GraduationCap className="w-4 h-4" />
+                  <span>R25 AI Quizzes</span>
+                </button>
+                <button
+                  onClick={() => { setActiveTab('faculty'); setMobileMenuOpen(false); }}
+                  className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
+                    activeTab === 'faculty' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>HOD & Faculty</span>
+                </button>
+                <button
+                  onClick={() => { setActiveTab('contact'); setMobileMenuOpen(false); }}
+                  className={`p-2.5 rounded-xl text-xs font-semibold text-left flex items-center gap-2 ${
+                    activeTab === 'contact' ? 'bg-[#800020] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  <Phone className="w-4 h-4" />
+                  <span>KMCE Info & Contact</span>
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>

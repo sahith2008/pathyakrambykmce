@@ -42,7 +42,7 @@ export const CollegeInfoView: React.FC = () => {
                   NAAC & NBA Accredited
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs font-semibold border border-white/30">
-                  JNTUH R25 Autonomous
+                  Affiliated to JNTU
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold font-heading">
@@ -66,7 +66,7 @@ export const CollegeInfoView: React.FC = () => {
         </div>
       </div>
 
-      {/* College Heritage & Autonomous Credentials */}
+      {/* College Heritage & Affiliated Credentials */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-2">
           <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/80 text-[#800020] dark:text-rose-400 flex items-center justify-center font-bold">
@@ -85,7 +85,7 @@ export const CollegeInfoView: React.FC = () => {
             <Award className="w-5 h-5" />
           </div>
           <h3 className="font-bold text-sm text-slate-900 dark:text-white">
-            Autonomous R25 Curriculum
+            Affiliated to JNTU (R25 Curriculum)
           </h3>
           <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
             Pioneering the advanced JNTUH R25 curriculum with industry internships, AI and ML skill specializations, and digital examination repositories.

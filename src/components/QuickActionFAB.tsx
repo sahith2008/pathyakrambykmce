@@ -57,7 +57,19 @@ export const QuickActionFAB: React.FC<QuickActionFABProps> = ({
     setIsOpen(false);
   };
 
-  const quickActions = [
+  const isFaculty = userRole === 'faculty' || userRole === 'hod_admin';
+
+  const allQuickActions = [
+    {
+      id: 'papers',
+      label: 'Question Papers Archive',
+      sublabel: 'Past mid & sem exam papers',
+      icon: BookOpen,
+      color: 'bg-stone-700 hover:bg-stone-800 text-white',
+      badge: 'R25 / R22',
+      badgeClass: 'bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-300 border-stone-200 dark:border-stone-700',
+      allowedRoles: ['student', 'faculty', 'hod_admin'],
+    },
     {
       id: 'quiz',
       label: 'Take New Quiz',
@@ -66,15 +78,7 @@ export const QuickActionFAB: React.FC<QuickActionFABProps> = ({
       color: 'bg-emerald-600 hover:bg-emerald-700 text-white',
       badge: 'Instant Score',
       badgeClass: 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
-    },
-    {
-      id: 'upload',
-      label: 'Upload Document',
-      sublabel: 'Add PYQPs & syllabus notes',
-      icon: FileUp,
-      color: 'bg-[#800020] hover:bg-[#66001a] text-white',
-      badge: userRole === 'faculty' || userRole === 'hod_admin' ? 'Faculty Portal' : 'Staff Upload',
-      badgeClass: 'bg-rose-100 dark:bg-rose-950 text-[#800020] dark:text-rose-300 border-rose-200 dark:border-rose-800',
+      allowedRoles: ['student'],
     },
     {
       id: 'faculty',
@@ -84,26 +88,24 @@ export const QuickActionFAB: React.FC<QuickActionFABProps> = ({
       color: 'bg-slate-800 hover:bg-slate-900 text-white dark:bg-slate-700 dark:hover:bg-slate-600',
       badge: 'Cabin & Phone',
       badgeClass: 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700',
+      allowedRoles: ['student'],
     },
     {
-      id: 'papers',
-      label: 'Question Papers Archive',
-      sublabel: 'Past mid & sem exam papers',
-      icon: BookOpen,
-      color: 'bg-stone-700 hover:bg-stone-800 text-white',
-      badge: 'R25 / R22',
-      badgeClass: 'bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-300 border-stone-200 dark:border-stone-700',
-    },
-    {
-      id: 'attendance',
-      label: 'Attendance Calculator',
-      sublabel: '75% mandatory threshold check',
-      icon: CheckCircle2,
-      color: 'bg-amber-600 hover:bg-amber-700 text-white',
-      badge: 'Safe Bunk Calc',
-      badgeClass: 'bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 border-amber-200 dark:border-amber-800',
+      id: 'upload',
+      label: 'Upload Document',
+      sublabel: 'Add PYQPs & syllabus notes',
+      icon: FileUp,
+      color: 'bg-[#800020] hover:bg-[#66001a] text-white',
+      badge: isFaculty ? 'Faculty Portal' : 'Staff Upload',
+      badgeClass: 'bg-rose-100 dark:bg-rose-950 text-[#800020] dark:text-rose-300 border-rose-200 dark:border-rose-800',
+      allowedRoles: ['faculty', 'hod_admin'],
     },
   ];
+
+  const quickActions = allQuickActions.filter((action) => {
+    if (!userRole) return true;
+    return action.allowedRoles.includes(userRole);
+  });
 
   return (
     <div
