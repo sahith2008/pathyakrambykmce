@@ -126,7 +126,97 @@ export const QuestionPapersView: React.FC<QuestionPapersViewProps> = ({
     // Save to local cache as well
     toggleSavePaperOffline(paper);
     paper.downloadCount = (paper.downloadCount || 0) + 1;
-    setDownloadSuccessToast(`Downloaded & Saved "${paper.subjectCode} - ${paper.title}" to offline storage.`);
+
+    // Generate real downloadable document
+    const previewData = paper.questionsPreview || {
+      sectionA: [
+        `Explain the fundamental definitions and core theorem of ${paper.subjectName}.`,
+        `State the principal assumptions and boundary conditions in ${paper.subjectCode}.`,
+        `Derive the key governing equation for Unit 1 topics.`,
+        `Compare and contrast primary analytical models in ${paper.branch} engineering.`,
+        `State two practical industrial applications of ${paper.subjectName}.`
+      ],
+      sectionB: [
+        { qNum: 'Q1(a)', text: `Explain the detailed architecture and mathematical formulation of ${paper.subjectName} with neat diagrams.`, marks: 7 },
+        { qNum: 'Q1(b)', text: `Solve the given analytical problem for steady-state response with standard parameters.`, marks: 8 },
+        { qNum: 'Q2(a)', text: `Describe the state-of-the-art methodology used in JNTUH R25 curriculum for this domain.`, marks: 8 },
+        { qNum: 'Q2(b)', text: `Write an algorithm or design procedure step-by-step with complexity analysis.`, marks: 7 }
+      ]
+    };
+
+    const paperHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>${paper.subjectCode} - ${paper.subjectName} (${paper.examType})</title>
+<style>
+  body { font-family: 'Times New Roman', serif; padding: 40px; color: #111; max-width: 800px; margin: auto; }
+  .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 12px; margin-bottom: 20px; }
+  .meta-table { width: 100%; font-size: 13px; font-weight: bold; margin-bottom: 10px; }
+  .college-title { font-size: 20px; font-weight: bold; text-transform: uppercase; margin: 4px 0; }
+  .sub-header { font-size: 13px; margin: 2px 0; }
+  .exam-title { font-size: 15px; font-weight: bold; text-transform: uppercase; margin-top: 8px; }
+  .branch-subject { font-size: 16px; font-weight: bold; color: #800020; margin-top: 4px; }
+  .marks-table { width: 100%; font-size: 12px; border-top: 1px solid #ccc; padding-top: 6px; margin-top: 8px; }
+  .section-title { background: #f0f0f0; border: 1px solid #999; padding: 4px 8px; font-weight: bold; font-size: 13px; margin: 20px 0 10px; display: flex; justify-content: space-between; }
+  ol { padding-left: 20px; line-height: 1.6; font-size: 14px; }
+  li { margin-bottom: 10px; }
+  .marks { float: right; font-weight: bold; font-size: 12px; }
+  .footer { border-top: 1px solid #000; margin-top: 30px; padding-top: 10px; font-size: 12px; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="header">
+  <table class="meta-table">
+    <tr>
+      <td align="left">Code No: <strong>${paper.subjectCode}</strong></td>
+      <td align="center">HT No: [ _ _ _ _ _ _ _ _ _ _ ]</td>
+      <td align="right">Regulation: ${paper.curriculum}</td>
+    </tr>
+  </table>
+  <div class="college-title">Keshav Memorial College of Engineering</div>
+  <div class="sub-header">Affiliated to JNTU • Hyderabad - 500068</div>
+  <div class="exam-title">B.Tech Semester ${paper.semester} ${paper.examType} Examination, ${paper.academicYear}</div>
+  <div class="branch-subject">Branch: ${paper.branch} — ${paper.subjectName}</div>
+  <table class="marks-table">
+    <tr>
+      <td align="left">Time: 3 Hours</td>
+      <td align="right">Max. Marks: 70</td>
+    </tr>
+  </table>
+</div>
+<div class="section-title">
+  <span>PART - A (Compulsory)</span>
+  <span style="float: right;">[10 x 2 = 20 Marks]</span>
+</div>
+<ol>
+  ${previewData.sectionA.map((q) => `<li>${q} <span class="marks">[2M]</span></li>`).join('\n  ')}
+</ol>
+<div class="section-title">
+  <span>PART - B (Answer 5 Questions)</span>
+  <span style="float: right;">[5 x 10 = 50 Marks]</span>
+</div>
+<div style="padding-left: 5px;">
+  ${previewData.sectionB.map((item) => `<div style="margin-bottom: 14px; line-height: 1.5; font-size: 14px;"><strong>${item.qNum}.</strong> ${item.text} <span class="marks">[${item.marks}M]</span></div>`).join('\n  ')}
+</div>
+<div class="footer">
+  <div>Verified by: <strong>${paper.uploadedBy}</strong></div>
+  <div>KMCE Digital Examination Repository • JNTUH R25</div>
+</div>
+</body>
+</html>`;
+
+    const blob = new Blob([paperHtml], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${paper.subjectCode}_${paper.examType.replace(/\s+/g, '_')}_${paper.academicYear}.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    setDownloadSuccessToast(`Downloaded & Saved "${paper.subjectCode} - ${paper.title}".`);
     setTimeout(() => {
       setDownloadSuccessToast(null);
     }, 4000);
@@ -244,7 +334,7 @@ export const QuestionPapersView: React.FC<QuestionPapersViewProps> = ({
           )}
         </div>
 
-        {/* Filter Dropdowns & Branch Pills */}
+        {/* Filter Dropdowns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
           {/* Branch Pill Selector */}
           <div>

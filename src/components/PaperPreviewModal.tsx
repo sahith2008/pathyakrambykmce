@@ -140,7 +140,7 @@ export const PaperPreviewModal: React.FC<PaperPreviewModalProps> = ({
               {KMCE_COLLEGE_INFO.name}
             </h2>
             <p className="text-xs text-slate-700 font-sans">
-              (Autonomous Institution • Affiliated to JNTUH Hyderabad)
+              (Affiliated to JNTU • Hyderabad)
             </p>
             <h3 className="text-sm sm:text-base font-bold mt-2 uppercase text-slate-900 font-sans">
               B.Tech {paper.semester === 1 ? 'I' : paper.semester === 2 ? 'II' : paper.semester === 3 ? 'III' : paper.semester === 4 ? 'IV' : paper.semester === 5 ? 'V' : paper.semester === 6 ? 'VI' : paper.semester === 7 ? 'VII' : 'VIII'} Semester {paper.examType} Examination, {paper.academicYear}

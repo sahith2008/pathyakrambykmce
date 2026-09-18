@@ -67,7 +67,7 @@ export const CourseListingsView: React.FC<CourseListingsViewProps> = ({
                 Academic Syllabus Catalog
               </span>
               <span className="text-xs text-rose-100">
-                JNTUH R25 Autonomous Scheme
+                JNTUH R25 Scheme (Affiliated to JNTU)
               </span>
             </div>
             <h2 className="text-xl sm:text-2xl font-light">

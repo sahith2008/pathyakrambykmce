@@ -24,57 +24,65 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
   userRole,
   uploadedCount,
 }) => {
-  const tabs = [
-    {
-      id: 'papers',
-      label: 'Question Papers (PYQPs)',
-      icon: BookOpen,
-      badge: 'R25 / R22',
-      badgeColor: 'bg-rose-50 dark:bg-rose-950/60 text-[#800020] dark:text-rose-300 border border-rose-200 dark:border-rose-800'
-    },
-    {
-      id: 'quiz',
-      label: 'JNTUH R25 AI Quiz Hub',
-      icon: GraduationCap,
-      badge: 'AI Instant Score',
-      badgeColor: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
-    },
-    {
-      id: 'attendance',
-      label: 'Attendance Tracker',
-      icon: CheckCircle2,
-      badge: '75% Calc',
-      badgeColor: 'bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
-    },
-    {
-      id: 'faculty',
-      label: 'HOD & Faculty Directory',
-      icon: Users,
-      badge: 'Admin Ref',
-      badgeColor: 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700'
-    },
-    {
-      id: 'courses',
-      label: 'Branch Course Listings',
-      icon: Layers,
-      badge: 'CSE • CSM • ECE',
-      badgeColor: 'bg-rose-50 dark:bg-rose-950/60 text-[#800020] dark:text-rose-300 border border-rose-200 dark:border-rose-800'
-    },
-    {
-      id: 'upload',
-      label: 'Faculty Upload Hub',
-      icon: FileUp,
-      badge: userRole === 'faculty' || userRole === 'hod_admin' ? 'Faculty Portal' : 'Docs View',
-      badgeColor: 'bg-rose-100 dark:bg-rose-950 text-[#800020] dark:text-rose-300 border border-rose-300 dark:border-rose-700'
-    },
-    {
-      id: 'contact',
-      label: 'KMCE Info & Contact',
-      icon: Info,
-      badge: 'Campus',
-      badgeColor: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700'
-    }
-  ];
+  const isFaculty = userRole === 'faculty' || userRole === 'hod_admin';
+
+  // Role-based visible tabs:
+  // Faculty Portal: Faculty Upload Hub, Branch & Course Listings, Question Paper (PYQ)
+  // Student Portal: Question Paper (PYQ), JNTUH R25 AI Quiz Hub, HOD & Faculty Directory, KMCE Info & Contact
+  const tabs = isFaculty
+    ? [
+        {
+          id: 'upload',
+          label: 'Faculty Upload Hub',
+          icon: FileUp,
+          badge: 'Faculty Portal',
+          badgeColor: 'bg-rose-100 dark:bg-rose-950 text-[#800020] dark:text-rose-300 border border-rose-300 dark:border-rose-700'
+        },
+        {
+          id: 'courses',
+          label: 'Branch Course Listings',
+          icon: Layers,
+          badge: 'CSE • CSM • ECE',
+          badgeColor: 'bg-rose-50 dark:bg-rose-950/60 text-[#800020] dark:text-rose-300 border border-rose-200 dark:border-rose-800'
+        },
+        {
+          id: 'papers',
+          label: 'Question Papers (PYQPs)',
+          icon: BookOpen,
+          badge: 'R25 / R22',
+          badgeColor: 'bg-rose-50 dark:bg-rose-950/60 text-[#800020] dark:text-rose-300 border border-rose-200 dark:border-rose-800'
+        }
+      ]
+    : [
+        {
+          id: 'papers',
+          label: 'Question Papers (PYQPs)',
+          icon: BookOpen,
+          badge: 'R25 / R22',
+          badgeColor: 'bg-rose-50 dark:bg-rose-950/60 text-[#800020] dark:text-rose-300 border border-rose-200 dark:border-rose-800'
+        },
+        {
+          id: 'quiz',
+          label: 'JNTUH R25 AI Quiz Hub',
+          icon: GraduationCap,
+          badge: 'AI Instant Score',
+          badgeColor: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+        },
+        {
+          id: 'faculty',
+          label: 'HOD & Faculty Directory',
+          icon: Users,
+          badge: 'Admin Ref',
+          badgeColor: 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700'
+        },
+        {
+          id: 'contact',
+          label: 'KMCE Info & Contact',
+          icon: Info,
+          badge: 'Campus',
+          badgeColor: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700'
+        }
+      ];
 
   return (
     <nav className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 lg:px-8 py-2 sticky top-[77px] z-30 shadow-xs">
